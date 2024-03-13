@@ -7,6 +7,10 @@
     isTransaction: {
       type: Boolean,
       default: false
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -42,6 +46,7 @@
         :rules="[required]"
         :clearable="!isLoading"
         :readonly="isLoading"
+        :disabled="isDisabled"
       />
       <v-text-field
         v-model="formAmount"
@@ -51,6 +56,7 @@
         :rules="[required]"
         :clearable="!isLoading"
         :readonly="isLoading"
+        :disabled="isDisabled"
       />
 
       <v-btn
@@ -58,6 +64,7 @@
         block
         class="font-weight-bold"
         :loading="isLoading"
+        :disabled="isDisabled"
       >
         Send
       </v-btn>

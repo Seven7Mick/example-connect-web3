@@ -2,6 +2,8 @@
   import { signMessage } from '@wagmi/core'
   import { config } from '~/configs/wagmi.config';
 
+  const wallet = useWalletStore()
+
   const isLoadingSign = ref(false)
 
   const signData = defineModel<string>('signData')
@@ -39,6 +41,7 @@
           class="mb-3"
           :rules="[required]"
           :clearable="!isLoadingSign"
+          :disabled="!wallet.getIsConnected"
           :readonly="isLoadingSign"
         />
       </v-col>
@@ -46,6 +49,7 @@
         <v-btn
           block
           class="font-weight-bold mt-2"
+          :disabled="!wallet.getIsConnected"
           :loading="isLoadingSign"
           @click="handleSign"
         >
@@ -61,6 +65,7 @@
           label="Sign message"
           class="mb-3"
           readonly
+          :disabled="!wallet.getIsConnected"
         />
       </v-col>
     </v-row>

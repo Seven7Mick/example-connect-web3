@@ -23,6 +23,7 @@ export const useWalletStore = defineStore('wallet', {
   getters: {
     getAccount: (state) => state.account,
     getNativeBalance: (state) => state.nativeBalance,
+    getIsConnected: (state) => state.account?.isConnected ?? false,
   },
 
   actions: {

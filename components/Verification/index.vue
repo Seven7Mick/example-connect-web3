@@ -2,6 +2,8 @@
   import { verifyMessage } from '@wagmi/core';
   import { config } from '~/configs/wagmi.config';
 
+  const wallet = useWalletStore()
+
   const isLoadingSign = ref(false)
   const verifySnackbarText = ref('')
   const verifySnackbarStatus = ref('green')
@@ -57,6 +59,7 @@
           :rules="[required]"
           :clearable="!isLoadingSign"
           :readonly="isLoadingSign"
+          :disabled="!wallet.getIsConnected"
         />
 
         <v-text-field
@@ -67,6 +70,7 @@
           :rules="[required]"
           :clearable="!isLoadingSign"
           :readonly="isLoadingSign"
+          :disabled="!wallet.getIsConnected"
         />
 
         <v-text-field
@@ -77,6 +81,7 @@
           :rules="[required]"
           :clearable="!isLoadingSign"
           :readonly="isLoadingSign"
+          :disabled="!wallet.getIsConnected"
         />
 
       </v-col>
@@ -87,6 +92,7 @@
           block
           class="font-weight-bold"
           :loading="isLoadingSign"
+          :disabled="!wallet.getIsConnected"
           @click="handleSign"
         >
           Verify

@@ -39,7 +39,7 @@ onMounted(async () => {
         class="font-weight-bold"
         size="large"
         @click="wallet.disconnectWallet"
-        :disabled="!wallet.getAccount?.isConnected"
+        :disabled="!wallet.getIsConnected"
       >
         Disconnect
       </v-btn>

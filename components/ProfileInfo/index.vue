@@ -7,7 +7,7 @@
     ['Connection status', wallet.getAccount?.status ?? 'disconnected'],
     ['Account address', wallet.getAccount?.address ?? 'Empty'],
     ['Chain ID', wallet.getAccount?.chainId ?? 'Empty'],
-    ['Balance', wallet.getNativeBalance?.value
+    ['Balance', wallet.getAccount?.address && wallet.getNativeBalance?.value
       ? `${formatUnits(wallet.getNativeBalance.value, wallet.getNativeBalance.decimals)}
         ${wallet.getNativeBalance.symbol}`
       : 'Empty'

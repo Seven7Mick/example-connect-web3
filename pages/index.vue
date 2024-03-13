@@ -38,6 +38,7 @@
       class="mb-6"
       is-transaction
       :is-loading="isLoadingTransfer"
+      :is-disabled="!wallet.getIsConnected"
       @submit:form="handleTransaction"
     />
     <Token class="mb-6"/>

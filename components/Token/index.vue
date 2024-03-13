@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import BigNumber from 'bignumber.js';
-import { readContracts, waitForTransactionReceipt, watchContractEvent, writeContract } from '@wagmi/core';
-import { parseEther, zeroAddress } from 'viem';
-import { ERC20_PARAMS } from '~/configs/main.config';
-import { config } from '~/configs/wagmi.config';
+  import BigNumber from 'bignumber.js';
+  import { readContracts, waitForTransactionReceipt, watchContractEvent, writeContract } from '@wagmi/core';
+  import { parseEther, zeroAddress } from 'viem';
+  import { ERC20_PARAMS } from '~/configs/main.config';
+  import { config } from '~/configs/wagmi.config';
 
   const wallet = useWalletStore()
 
@@ -35,12 +35,13 @@ import { config } from '~/configs/wagmi.config';
       onLogs(logs) {
         const [{ args }] = logs
         const { from, to, value } = args
+        setTokenBalance()
+
         if (from === zeroAddress && to === address.value) {
           token.value.balance = new BigNumber(token.value.balance)
             .plus(value?.toString() ?? 0)
             .toString()
 
-          setTokenBalance()
           isSnackbarMint.value = true
           return
         }
@@ -50,7 +51,6 @@ import { config } from '~/configs/wagmi.config';
             .minus(value?.toString() ?? 0)
             .toString()
 
-          setTokenBalance()
           snackbarTransferList.set('From:', from)
           snackbarTransferList.set('To:', to)
           snackbarTransferList.set('Amount:', new BigNumber(value?.toString() ?? 0).div(10 ** token.value.decimals).toString())
@@ -105,8 +105,13 @@ import { config } from '~/configs/wagmi.config';
   }
 
   watch(address, async (newVal) => {
-    if (!newVal) return
-    await fetchTokenInfo()
+    if (newVal) {
+      await fetchTokenInfo()
+      return
+    }
+    tokenInfo.set('Balance', '0')
+    tokenInfo.set('Name', 'Empty')
+    tokenInfo.set('Symbol', 'Empty')
   })
 
   async function handleMint({ formAmount }: {formAmount : string}) {
@@ -157,7 +162,8 @@ import { config } from '~/configs/wagmi.config';
     <v-row class="my-6">
       <TransactionForm
         class="bg-blue-grey-lighten-1"
-        :isLoading="isLoadingMint"
+        :is-loading="isLoadingMint"
+        :is-disabled="!wallet.getIsConnected"
         @submit:form="handleMint"
       />
     </v-row>
@@ -166,6 +172,7 @@ import { config } from '~/configs/wagmi.config';
         class="bg-blue-grey-lighten-1"
         is-transaction
         :is-loading="isLoadingTransfer"
+        :is-disabled="!wallet.getIsConnected"
         @submit:form="handleTransfer"
       />
     </v-row>
